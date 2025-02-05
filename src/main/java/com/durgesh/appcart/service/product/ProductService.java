@@ -11,6 +11,7 @@ import com.durgesh.appcart.model.Product;
 import com.durgesh.appcart.repository.CategoryRepository;
 import com.durgesh.appcart.repository.ProductRepository;
 import com.durgesh.appcart.request.AddProductRequest;
+import com.durgesh.appcart.request.ProductUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -63,12 +64,22 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void updateProduct(Product product, Long productId) {
-        return null;
+    public Product updateProduct(ProductUpdateRequest request, Long productId) {
+        return productRepository.findById(productId)
+        .map(existingProduct -> updateExistingProduct(existingProduct, request))
+        .map(productRepository :: save)
+        .orElseThrow(() -> new ProductNotFoundException("Product Not Found!"));
     }
 
-    private updateProduct(Product product, Long productId) {
-        return 
+    private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
+        existingProduct.setName(request.getName());
+        existingProduct.setBrand(request.getBrand());
+        existingProduct.setPrice(request.getPrice());
+        existingProduct.setInventory(request.getInventory());
+        existingProduct.setDescription(request.getDescription());
+        Category category = categoryRepository.findByName(request.getCategory().getName());
+        existingProduct.setCategory(category);
+        return existingProduct;
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.durgesh.appcart.model.Product;
 import com.durgesh.appcart.request.AddProductRequest;
+import com.durgesh.appcart.request.ProductUpdateRequest;
 
 public interface IProductService {
 
@@ -13,7 +14,7 @@ public interface IProductService {
     
     void deleteProductById(Long id);
     
-    void updateProduct(Product product, Long productId);
+    Product updateProduct(ProductUpdateRequest request, Long productId);
     
     List<Product> getAllProducts();
 
